@@ -2,18 +2,22 @@ package com.jediminer543.Arena.config;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 public class Config 
 {
 	Properties config;
+	File configFile;
 	
 	public Config(File f) throws IOException
 	{
+		configFile = f;
 		config = new Properties();
 		FileInputStream configreader = new FileInputStream(f);
 		config.load(configreader);
+		configreader.close();
 	}
 	
 	
@@ -37,7 +41,7 @@ public class Config
 	}
 	*/
 	
-	public void set(String path, Object value)
+	public void set(String path, Object value) throws IOException
 	{
 		if (value instanceof String)
 		{
@@ -63,6 +67,8 @@ public class Config
 		{
 		config.setProperty(path, Double.toString((double) value));
 		}
+		FileOutputStream output = new FileOutputStream(configFile);
+		config.store(output, "Main Config File");
 	}
 	
 	public String readString(String path)
