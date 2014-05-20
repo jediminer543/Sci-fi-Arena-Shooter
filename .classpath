@@ -51,5 +51,6 @@
 	<classpathentry kind="lib" path="jars/slick-util/jogg-0.0.7.jar"/>
 	<classpathentry kind="lib" path="jars/slick-util/jorbis-0.0.15.jar"/>
 	<classpathentry kind="lib" path="jars/slick-util/slick-util.jar"/>
+	<classpathentry kind="lib" path="jars/PNGDecoder/PNGDecoder.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

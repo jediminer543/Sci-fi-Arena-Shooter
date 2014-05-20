@@ -17,6 +17,7 @@ public class TextHandeler
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
 		GL11.glEnable(GL_BLEND);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GLOBALS.DebugText.drawString(x, y, text, colour);
 		GL11.glDisable(GL_BLEND);
 		GL11.glPopMatrix();
@@ -33,6 +34,7 @@ public class TextHandeler
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
 		GL11.glEnable(GL_BLEND);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GLOBALS.TitleText.drawString(x, y, text, colour);
 		GL11.glDisable(GL_BLEND);
 		GL11.glPopMatrix();

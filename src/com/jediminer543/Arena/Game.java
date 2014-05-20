@@ -11,7 +11,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;
 
@@ -20,10 +19,11 @@ import static org.lwjgl.util.glu.GLU.*;
 
 import com.jediminer543.Arena.config.Config;
 import com.jediminer543.Arena.entity.player.Player;
+import com.jediminer543.Arena.globals.GLOBALPHYS;
 import com.jediminer543.Arena.globals.GLOBALS;
+import com.jediminer543.Arena.levels.Debug;
+import com.jediminer543.Arena.menu.hud.HUD;
 import com.jediminer543.Arena.renders.IRenderable;
-import com.jediminer543.Arena.renders.basic.Cube;
-import com.jediminer543.Arena.util.TextHandeler;
 
 public class Game
 {
@@ -31,7 +31,7 @@ public class Game
 	public static File configFile;
 	public static Config config;
 	
-
+	static Player player = new Player(new Vector3f(0,2,0));
 	
 	
 	public static void main(String[] args)
@@ -69,17 +69,25 @@ public class Game
 	
 	public static void initGameComponents()
 	{
-		GLOBALS.FOV = 90;
-		GLOBALS.TickPool.add(new Player(new Vector3f(0,2,0)));
-		GLOBALS.RenderPool.add(new Cube(new Vector3f(-50,-5,-50), new Vector3f(100, 1, 100)));
+		initPhys();
+		GLOBALS.FOV = 60;
+		GLOBALS.TickPool.add(player);
+		Debug.load();
+		//GLOBALS.RenderPool.add(new Cube(new Vector3f(-50,-5,-50), new Vector3f(100, 1, 100)));
+		GLOBALS.RenderPool.add(new HUD());
+		
+		//Fonts
 		Font awtDebugFont = new Font("Courier", Font.PLAIN, 12);
 		GLOBALS.DebugText = new TrueTypeFont(awtDebugFont, false);
 		try {
-			InputStream inputStream = ResourceLoader.getResourceAsStream("/res/Fonts/INTERDIM.TTF");
+			InputStream inputStream = ResourceLoader.getResourceAsStream("/res/Fonts/SubZER0.ttf");
 			Font awtTitleFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 			awtTitleFont = awtTitleFont.deriveFont(35f); 
-			
-			GLOBALS.TitleText = 	new TrueTypeFont(awtTitleFont, false);
+			GLOBALS.TitleText = new TrueTypeFont(awtTitleFont, false);
+			InputStream inputStream1 = ResourceLoader.getResourceAsStream("/res/Fonts/xirod.ttf");
+			Font awtHUD = Font.createFont(Font.TRUETYPE_FONT, inputStream1);
+			awtHUD = awtHUD.deriveFont(24f); 
+			GLOBALS.HUDText = new TrueTypeFont(awtHUD, false);
 		}
 		catch (Exception e)
 		{
@@ -105,7 +113,7 @@ public class Game
 	{
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(GLOBALS.FOV, (float) Display.getWidth() / (float) Display.getHeight(), 0.1f, 100f);
+        gluPerspective(GLOBALS.FOV, (float) Display.getWidth() / (float) Display.getHeight(), 0.01f, 100f);
         glGetFloat(GL_PROJECTION_MATRIX, GLOBALS.GLUMatrix);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -117,11 +125,17 @@ public class Game
 
 
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDisable(GL_BLEND);
 	}
 	
+	public static void initPhys()
+	{
+		GLOBALPHYS.deceleration = new Vector3f(5, 5, 5);
+	}
+
 	public static void gameLoop()
 	{
         Mouse.setGrabbed(true);
@@ -139,6 +153,7 @@ public class Game
 			gameGL();
 			gameRender();
 			gameTick();
+			player.physTick();
 			//System.out.println("Game Loop Ran");
 		}
 		System.exit(0);
@@ -154,19 +169,20 @@ public class Game
 	
 	public static void gameGL()
 	{
-		Display.sync(120);
+		Display.sync(60);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		GL11.glClearColor(0.2f, 6.08f, 8.08f, 0);
 	}
 	
 	public static void gameRender()
 	{
-		
-		TextHandeler.drawTitleStringHUD((Display.getWidth() / 2) - 200, Display.getHeight() - 40, "Sci-fi Shooter", Color.red);
-		
 		for (IRenderable t:GLOBALS.RenderPool)
 		{
+			glPushMatrix();
 			t.render();
+			glPopMatrix();
 		}
+		//TextHandeler.drawTitleStringHUD(Display.getWidth()/2, Display.getHeight() / 2, "SciFi Arena", Color.red);
 	}
 	
 	
