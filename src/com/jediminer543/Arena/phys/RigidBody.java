@@ -6,12 +6,13 @@ import com.jediminer543.Arena.globals.GLOBALPHYS;
 
 public class RigidBody implements IPhysTickable
 {
-	//private List<Shape> shape = new List<Shape>();
+	protected AABB boundingbox;
 	
 	protected Vector3f look = new Vector3f();
 	
 	/**
 	 * Temporary buffer for look related movement
+	 * Converted once every physics tick
 	 */
 	protected Vector3f lookVelocity = new Vector3f();
 	
@@ -34,7 +35,8 @@ public class RigidBody implements IPhysTickable
 		position.x += velocity.getX();
 		position.y += velocity.getY();
 		position.z += velocity.getZ();
-		/*
+		
+		//decelerates by golbal deceleration constant
 		if (velocity.x >= GLOBALPHYS.deceleration.x )
 			velocity.x -= GLOBALPHYS.deceleration.x;
 			else if (velocity.x <= -GLOBALPHYS.deceleration.x & velocity.x < 0)
@@ -55,8 +57,7 @@ public class RigidBody implements IPhysTickable
 			velocity.z += GLOBALPHYS.deceleration.z;
 			else if ((velocity.z <= GLOBALPHYS.deceleration.z & velocity.z >= 0) | (velocity.z >= -GLOBALPHYS.deceleration.z & velocity.z <= 0) )
 			velocity.z = 0;
-		*/
-		velocity = new Vector3f();
+		//velocity = new Vector3f();
 	}
 	
 	void physConvertLook()

@@ -53,16 +53,16 @@ public class Player extends RigidBody implements Tickable
 			look.y = -90;
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_W))
-		lookVelocity.x += (float) (1 * 0.1);
+		lookVelocity.x += (float) (10 * 0.1);
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_S))
-		lookVelocity.x += (float) (-1 * 0.1);
+		lookVelocity.x += (float) (-10 * 0.1);
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_A))
-		lookVelocity.z += (float) (1 * 0.1);
+		lookVelocity.z += (float) (10 * 0.1);
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_D))
-		lookVelocity.z += (float) (-1 * 0.1);
+		lookVelocity.z += (float) (-10 * 0.1);
 		
 		tickCamera();
 		tickDebug();

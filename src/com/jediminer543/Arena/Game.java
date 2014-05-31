@@ -133,7 +133,7 @@ public class Game
 	
 	public static void initPhys()
 	{
-		GLOBALPHYS.deceleration = new Vector3f(5, 5, 5);
+		GLOBALPHYS.deceleration = new Vector3f(0.001f, 0.001f, 0.001f);
 	}
 
 	public static void gameLoop()
