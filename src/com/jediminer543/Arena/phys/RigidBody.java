@@ -6,7 +6,7 @@ import com.jediminer543.Arena.globals.GLOBALPHYS;
 
 public class RigidBody implements IPhysTickable
 {
-	protected AABB boundingbox;
+	protected AABB aabb;
 	
 	protected Vector3f look = new Vector3f();
 	
@@ -32,11 +32,29 @@ public class RigidBody implements IPhysTickable
 	
 	void physCalcVelocity()
 	{
+		//determines if the body can move
+		
 		position.x += velocity.getX();
 		position.y += velocity.getY();
 		position.z += velocity.getZ();
 		
 		//decelerates by golbal deceleration constant
+		this.physCalcVelocityDecelerate();
+		
+		
+	}
+	
+	/**
+	 * Calculates if the rigid body can move
+	 */
+	void physCalcVelocityMove()
+	{
+		AABB XpredictAABB = new AABB();
+		XpredictAABB.size = new Vector3f(aabb.size.x, aabb.size.y, aabb.size.z);
+	}
+	
+	void physCalcVelocityDecelerate()
+	{
 		if (velocity.x >= GLOBALPHYS.deceleration.x )
 			velocity.x -= GLOBALPHYS.deceleration.x;
 			else if (velocity.x <= -GLOBALPHYS.deceleration.x & velocity.x < 0)
@@ -57,8 +75,8 @@ public class RigidBody implements IPhysTickable
 			velocity.z += GLOBALPHYS.deceleration.z;
 			else if ((velocity.z <= GLOBALPHYS.deceleration.z & velocity.z >= 0) | (velocity.z >= -GLOBALPHYS.deceleration.z & velocity.z <= 0) )
 			velocity.z = 0;
-		//velocity = new Vector3f();
 	}
+	
 	
 	void physConvertLook()
 	{
